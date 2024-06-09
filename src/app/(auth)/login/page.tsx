@@ -1,4 +1,6 @@
 "use client";
+import { useLoginMutation } from "@/redux/apis/auth";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type TFormInput = {
@@ -12,11 +14,18 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<TFormInput>();
+  const router = useRouter();
+  const [loginFunc, { error }] = useLoginMutation();
 
-  const onSubmit: SubmitHandler<TFormInput> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<TFormInput> = async (data) => {
+    const resp = await loginFunc(data);
+    if (resp.data) {
+      router.push("/");
+    } else {
+      console.log(resp);
+    }
   };
-  console.log(errors);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -36,6 +45,7 @@ export default function Login() {
         })}
         data-testid="login-email-input"
       />
+      <p>{errors.email?.message}</p>
       <input
         type="password"
         placeholder="Password"
@@ -55,6 +65,8 @@ export default function Login() {
         })}
         data-testid="password-email-input"
       />
+      <p>{errors.password?.message}</p>
+      {typeof error == "string" && <p>{error}</p>}
       <button type="submit" data-testid="submit-login-button">
         Login
       </button>
