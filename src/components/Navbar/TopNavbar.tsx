@@ -2,11 +2,14 @@
 import { usePathname, useRouter } from "next/navigation";
 import Navlink from "./Navlink";
 
-const linkList = [
-  { title: "Homepage", href: "/" },
-  { title: "About", href: "/about" },
-  { title: "Contact", href: "/contact" },
-  { title: "Blog", href: "/blog" },
+const linkList: {
+  title: string;
+  href: string;
+}[] = [
+  // { title: "Homepage", href: "/" },
+  // { title: "About", href: "/about" },
+  // { title: "Contact", href: "/contact" },
+  // { title: "Blog", href: "/blog" },
 ];
 
 export default function Navbar() {
@@ -30,7 +33,7 @@ export default function Navbar() {
         {session ? (
           isAdmin ? (
             <>
-              <Navlink title="Admin" href="/" />
+              <Navlink title="Admin" href="/admin" />
               <button type="button" onClick={onLogout}>
                 Logout
               </button>
